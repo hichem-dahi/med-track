@@ -1,0 +1,16 @@
+{
+    "assessments": "Bilans",
+    "add": "Ajouter",
+    "no-assessments-msg": "Aucun bilan trouvé pour ce patient.",
+    "patients-list": "Liste des patients",
+    "add-patient": "Ajouter un patient",
+    "phone": "Téléphone",
+    "sex": "Sexe",
+    "medical-history": "Antécédents médicaux",
+    "new-patient": "Nouveau patient",
+    "view-assessments": "Voir les bilans",
+    "birthday": "Date de naissance",
+    "name": "Nom",
+    "add-assessment": "Ajouter un bilan",
+    "new-assessment": "Nouveau bilan"
+}

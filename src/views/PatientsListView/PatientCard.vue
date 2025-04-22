@@ -16,40 +16,38 @@
         </v-list>
       </v-menu>
     </template>
+
     <template #title>
-      <span class="text-h6">{{ patient.name }}</span>
+      <span>{{ patient.name }}</span>
     </template>
 
     <template #subtitle>
-      <span>{{ formatDate(patient.birthday) }}</span>
+      <span class="text-caption">{{ formatDate(patient.birthday) }}</span>
     </template>
-
     <template #text>
-      <v-row>
-        <v-col cols="6">
-          <strong>Phone:</strong>
-          <div>{{ patient.phone }}</div>
-        </v-col>
-        <v-col cols="6">
-          <strong>Gender:</strong>
-          <div class="text-capitalize">{{ patient.gender }}</div>
-        </v-col>
-      </v-row>
-      <br />
-      <br />
-      <div>
-        <strong>Medical History:</strong>
-        <div>{{ patient.medical_history }}</div>
+      <div class="text-caption text-blue-grey-darken-3 text-medium-emphasis" style="line-height: 1.7;">
+        <v-row class="py-2">
+          <v-col>
+            <div>
+              <strong>{{ $t('phone') }}:</strong> <br>
+              <a :href="`tel:${patient.phone}`">{{ patient.phone }}</a>
+            </div>
+          </v-col>
+          <v-col>
+            <div>
+              <strong>{{ $t('sex') }}:</strong> <br>
+              <div class="text-capitalize">{{ patient.gender }}</div>
+            </div>
+          </v-col>
+        </v-row>
+        <div>
+          <strong>{{ $t('medical-history') }}</strong>
+          <div>{{ patient.medical_history }}</div>
+        </div>
       </div>
     </template>
     <template #actions>
-      <v-btn
-        size="small"
-        color="primary"
-        @click="$router.push({ name: 'PatientDetails', params: { id: patient.id } })"
-      >
-        View Assessments
-      </v-btn>
+      <slot name="actions"></slot>
     </template>
   </v-card>
 </template>

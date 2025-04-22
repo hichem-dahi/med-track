@@ -1,4 +1,4 @@
-import type { Patient } from '@/models/models'
+import type { Assessment, Patient } from '@/models/models'
 
 export const patientsData: Patient[] = [
   {
@@ -8,20 +8,6 @@ export const patientsData: Patient[] = [
     gender: 'female',
     phone: '+213612345678',
     medical_history: 'Hypertension, allergic to penicillin.',
-    assessments: [
-      {
-        id: 'a1',
-        patient_id: '1',
-        description: 'Initial consultation. Blood pressure elevated.',
-        date: '2025-03-01',
-      },
-      {
-        id: 'a2',
-        patient_id: '1',
-        description: 'Follow-up. Blood pressure improved with medication.',
-        date: '2025-04-01',
-      },
-    ],
   },
   {
     id: '2',
@@ -30,14 +16,6 @@ export const patientsData: Patient[] = [
     gender: 'male',
     phone: '+213698765432',
     medical_history: 'Diabetic Type 2, smoker.',
-    assessments: [
-      {
-        id: 'a3',
-        patient_id: '2',
-        description: 'Routine check-up. Blood sugar level high.',
-        date: '2025-02-15',
-      },
-    ],
   },
   {
     id: '3',
@@ -47,5 +25,26 @@ export const patientsData: Patient[] = [
     phone: '+213655432198',
     medical_history: 'Asthma since childhood.',
     assessments: [],
+  },
+]
+
+export const assessmentData: Assessment[] = [
+  {
+    id: 'a3',
+    patient_id: '2',
+    description: 'Routine check-up. Blood sugar level high.',
+    date: '2025-02-15',
+  },
+  {
+    id: 'a1',
+    patient_id: '1',
+    description: 'Initial consultation. Blood pressure elevated.',
+    date: '2025-03-01',
+  },
+  {
+    id: 'a2',
+    patient_id: '1',
+    description: 'Follow-up. Blood pressure improved with medication.',
+    date: '2025-04-01',
   },
 ]

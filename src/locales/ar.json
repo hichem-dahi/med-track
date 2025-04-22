@@ -1,0 +1,16 @@
+{
+    "assessments": "الفحوصات",
+    "add": "إضافة",
+    "no-assessments-msg": "لا توجد فحوصات لهذا المريض.",
+    "patients-list": "قائمة المرضى",
+    "add-patient": "إضافة مريض",
+    "phone": "رقم الهاتف",
+    "sex": "الجنس",
+    "medical-history": "التاريخ الطبي",
+    "new-patient": "مريض جديد",
+    "view-assessments": "عرض الفحوصات",
+    "birthday": "تاريخ الميلاد",
+    "name": "الاسم",
+    "add-assessment": "إضافة فحص",
+    "new-assessment": "فحص جديد"
+}
