@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer expand-on-hover rail>
+  <v-navigation-drawer v-model="drawer" expand-on-hover :rail="!$vuetify.display.mobile">
     <v-list>
       <v-list-item
         v-for="(item, i) in items"
@@ -12,9 +12,12 @@
   </v-navigation-drawer>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const drawer = defineModel<boolean>()
 
 const items = [
   {
