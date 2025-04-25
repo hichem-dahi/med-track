@@ -8,14 +8,6 @@ CREATE TABLE patients (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE appointments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  patient_id UUID REFERENCES patients(id) ON DELETE CASCADE,
-  starts_at TIMESTAMP NOT NULL,
-  ends_at TIMESTAMP NOT NULL,
-  notes TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE assessments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
