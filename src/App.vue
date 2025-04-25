@@ -2,7 +2,7 @@
   <v-responsive class="border rounded">
     <v-app>
       <AppBar />
-      <SideBar />
+      <SideBar v-model="drawer" />
       <v-main>
         <v-container>
           <RouterView />
@@ -13,6 +13,8 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
 import AppBar from './components/AppBar.vue'
 import SideBar from './components/SideBar.vue'
 
@@ -32,5 +34,13 @@ const db = new PGliteWorker(
 ) as PGliteWithLive
 
 providePGlite(db)
+
+const drawer = ref(true)
+
+onMounted(() => {
+  setTimeout(() => {
+    drawer.value = true
+  }, 100)
+})
 </script>
 <style></style>
