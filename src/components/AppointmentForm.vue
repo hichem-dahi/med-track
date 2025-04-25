@@ -48,7 +48,7 @@ const model = defineModel<Appointment>({
 currentAppt.value = { ...model.value }
 
 const form = reactive({
-  date: new Date(model.value.start_time),
+  date: model.value.start_time ? new Date(model.value.start_time) : new Date(),
   startTime: model.value.start_time ? format(new Date(model.value.start_time), 'HH:mm') : '12:00',
   endTime: model.value.start_time ? format(new Date(model.value.end_time), 'HH:mm') : '12:00',
 })
