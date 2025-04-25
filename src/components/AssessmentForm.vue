@@ -11,23 +11,23 @@
           :rules="[rules.required]"
         />
 
-        <v-text-field
+        <v-date-input
+          :label="$t('select-a-date')"
+          prepend-icon=""
+          prepend-inner-icon="$calendar"
           v-model="model.date"
-          :label="$t('date')"
-          type="date"
-          :rules="[rules.required]"
-        />
+        ></v-date-input>
 
-        <slot name="actions" />
+        <slot name="actions" :isValid="isValid" />
       </v-form>
     </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-import { defaultForm } from '@/views/PatientDetailsView/state';
+import { defaultForm } from '@/views/PatientDetailsView/state'
 
 import type { Assessment } from '@/models/models'
 
@@ -38,7 +38,7 @@ const emits = defineEmits<{
 defineProps<{ title: string }>()
 
 const model = defineModel<Assessment>({
-  default: defaultForm()
+  default: defaultForm(),
 })
 
 const isValid = ref(false)

@@ -12,5 +12,28 @@
     "birthday": "تاريخ الميلاد",
     "name": "الاسم",
     "add-assessment": "إضافة فحص",
-    "new-assessment": "فحص جديد"
+    "new-assessment": "فحص جديد",
+    "modify-assessment": "تعديل التقييم",
+    "description": "الوصف",
+    "date": "التاريخ",
+    "delete": "حذف",
+    "age": "العمر",
+    "save": "حفظ",
+    "select-a-date": "اختر تاريخًا",
+    "edit-patient-info": "تعديل معلومات المريض",
+    "confirm": "تأكيد",
+    "confirm-delete-msg": "لن تتمكن من تعديل هذا السجل بعد ذلك. هل تريد المتابعة؟",
+    "validation": {
+        "required": "هذا الحقل مطلوب",
+        "name": "أدخل اسمًا صالحًا",
+        "phone": "أدخل رقم هاتف صالح",
+        "date": "يرجى اختيار تاريخ صالح",
+        "gender": "يرجى اختيار الجنس"
+    },
+    "edit": "تعديل",
+    "add-appointment": "إضافة موعد",
+    "schedule": "الجدول",
+    "no-patients-found": "لم يتم العثور على مرضى",
+    "male": "ذكر",
+    "female": "أنثى"
 }

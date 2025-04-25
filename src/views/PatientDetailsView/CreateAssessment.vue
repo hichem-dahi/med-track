@@ -8,21 +8,27 @@
   </AssessmentForm>
 </template>
 <script setup lang="ts">
+import { injectPGlite } from '@electric-sql/pglite-vue'
+
 import AssessmentForm from '@/components/AssessmentForm.vue'
 
 import { defaultForm } from './state'
 
 import type { Assessment } from '@/models/models'
 
-import { assessmentData } from '@/assets/fakeData'
+import { upsertAssessment } from '@/pglite/queries/assessments/upsertAssessment'
 
-const model = defineModel<Assessment>({
+const db = injectPGlite()
+
+const isDialog = defineModel<boolean>('dialog')
+
+const model = defineModel<Assessment>('form',{
   default: defaultForm(),
 })
 
-function addAssessment(isValid: boolean) {
+async function addAssessment(isValid: boolean) {
   if (!isValid) return
-  assessmentData.push(model.value)
-  console.log(assessmentData)
+  await upsertAssessment(db, model.value)
+  isDialog.value = false
 }
 </script>

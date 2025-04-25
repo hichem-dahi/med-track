@@ -1,4 +1,8 @@
 <template>
-  <v-app-bar title="Med track"></v-app-bar>
+  <v-app-bar height="70">
+    <template #title>
+      <img height="50" src="/logo-cropped.png" alt="" />
+    </template>
+  </v-app-bar>
 </template>
 <script setup lang="ts"></script>

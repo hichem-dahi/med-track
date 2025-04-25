@@ -3,12 +3,12 @@
     <v-card-title>{{ title }}</v-card-title>
 
     <v-card-text>
-      <v-form ref="form">
+      <v-form ref="validation">
         <v-text-field
           density="compact"
           v-model="model.name"
           :label="$t('name')"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.name]"
           required
         />
 
@@ -16,27 +16,29 @@
           density="compact"
           v-model="model.phone"
           :label="$t('phone')"
-          :rules="[rules.required]"
+          :rules="[rules.required, rules.phone]"
           required
         />
 
-        <v-text-field
-          density="compact"
+        <v-date-input
           v-model="model.birthday"
           :label="$t('birthday')"
-          type="date"
-          :rules="[rules.required]"
+          prepend-icon=""
+          prepend-inner-icon="$calendar"
+          :rules="[rules.date]"
           required
-        />
+        ></v-date-input>
 
         <v-select
           density="compact"
           v-model="model.gender"
           :label="$t('sex')"
           :items="genders"
+          :item-title="(e) => $t(e)"
           :rules="[rules.required]"
           required
         />
+
         <v-textarea
           density="compact"
           v-model="model.medical_history"
@@ -47,18 +49,21 @@
     </v-card-text>
 
     <template #actions>
-      <slot name="actions" :validation="form" />
+      <slot name="actions" :validation="validation" />
     </template>
   </v-card>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Gender, type Patient } from '@/models/models'
+import { useI18n } from 'vue-i18n'
+import { type Patient } from '@/models/models'
+
+const { t } = useI18n()
 
 defineProps<{ title: string }>()
 
-const form = ref()
+const validation = ref()
 
 const model = defineModel<Patient>({
   default: {
@@ -70,12 +75,13 @@ const model = defineModel<Patient>({
   },
 })
 
-const genders = [
-  { title: 'male', value: Gender.Male },
-  { title: 'female', value: Gender.Female },
-]
+const genders = ['male', 'female']
 
 const rules = {
-  required: (v: number | string) => (v === 0 || !!v) || 'Required',
+  required: (v: unknown) => !!v || t('validation.required'),
+  name: (v: string) => (!!v && /^[a-zA-Z\u0600-\u06FF\s'-]{2,50}$/.test(v)) || t('validation.name'),
+  phone: (v: string) => (!!v && /^\+?\d{7,15}$/.test(v)) || t('validation.phone'),
+  date: (v: unknown) => !!v || t('validation.date'),
+  gender: (v: string) => !!v || t('validation.gender'),
 }
 </script>

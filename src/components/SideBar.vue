@@ -1,8 +1,9 @@
 <template>
-  <v-navigation-drawer>
+  <v-navigation-drawer expand-on-hover rail>
     <v-list>
       <v-list-item
-        v-for="item in items"
+        v-for="(item, i) in items"
+        :key="i"
         :title="item.title"
         :prepend-icon="item.icon"
         @click="$router.push({ name: item.route_name })"
@@ -20,6 +21,11 @@ const items = [
     title: t('patients-list'),
     icon: 'mdi-account-multiple',
     route_name: 'PatientsList',
+  },
+  {
+    title: t('schedule'),
+    icon: 'mdi-calendar',
+    route_name: 'Schedule',
   },
 ]
 </script>

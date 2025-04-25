@@ -5,8 +5,16 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+import { VDateInput } from 'vuetify/labs/VDateInput'
+import { VCalendar } from 'vuetify/labs/VCalendar'
+import { VTimePicker } from 'vuetify/labs/VTimePicker'
+
 export const vuetify = createVuetify({
-  components,
+  components: {
+    ...components,
+    VDateInput,
+    VCalendar,
+    VTimePicker,
+  },
   directives,
 })
-

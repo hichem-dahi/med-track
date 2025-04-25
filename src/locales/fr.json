@@ -12,5 +12,28 @@
     "birthday": "Date de naissance",
     "name": "Nom",
     "add-assessment": "Ajouter un bilan",
-    "new-assessment": "Nouveau bilan"
+    "new-assessment": "Nouveau bilan",
+    "modify-assessment": "Modifier le bilan",
+    "description": "Description",
+    "date": "Date",
+    "delete": "Supprimer",
+    "age": "Âge",
+    "save": "Enregistrer",
+    "select-a-date": "Sélectionner une date",
+    "edit-patient-info": "Modifier les informations du patient",
+    "confirm": "Confirmer",
+    "confirm-delete-msg": "Vous ne pourrez plus modifier cet enregistrement après cela. Voulez-vous continuer ?",
+    "validation": {
+        "required": "Ce champ est requis",
+        "name": "Entrez un nom valide",
+        "phone": "Entrez un numéro de téléphone valide",
+        "date": "Veuillez sélectionner une date valide",
+        "gender": "Veuillez sélectionner un genre"
+    },
+    "edit": "Modifier",
+    "add-appointment": "Ajouter un rendez-vous",
+    "schedule": "Emploi du temps",
+    "no-patients-found": "Aucun patient trouvé",
+    "male": "Homme",
+    "female": "Femme"
 }

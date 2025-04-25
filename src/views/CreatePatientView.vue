@@ -11,29 +11,31 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { injectPGlite } from '@electric-sql/pglite-vue'
 import type { VForm } from 'vuetify/components'
 
 import PatientForm from '@/components/PatientForm.vue'
 
-import { Gender } from '@/models/models'
-import { patientsData } from '@/assets/fakeData'
+import { upsertPatient } from '@/pglite/queries/patients/upsertPatients'
+
+import { type Patient } from '@/models/models'
+
+const db = injectPGlite()
 
 const router = useRouter()
 
-const form = ref({
-  id: '',
+const form = ref<Patient>({
   name: '',
   phone: '',
-  birthday: '',
-  gender: Gender.Male,
+  birthday: new Date(),
+  gender: 'male',
   medical_history: '',
 })
 
-function addPatient(validation: VForm) {
+async function addPatient(validation: VForm) {
   validation.validate()
   if (validation.isValid) {
-    console.log(form.value)
-    patientsData.push(form.value)
+    await upsertPatient(db, form.value)
     router.go(-1)
   }
 }
