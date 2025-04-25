@@ -98,7 +98,7 @@ import AssessmentForm from '@/components/AssessmentForm.vue'
 import AppointmentForm from '@/components/AppointmentForm.vue'
 import Calendar from '@/components/Calendar.vue'
 
-import { form } from './PatientDetailsView/state'
+import { form, resetForm } from './PatientDetailsView/state'
 
 import { upsertAssessment } from '@/pglite/queries/assessments/upsertAssessment'
 import { deleteAssessment } from '@/pglite/queries/assessments/deleteAssessment'
@@ -185,6 +185,7 @@ async function insertAppointement(validation: VForm) {
   await validation.validate()
   if (!validation.isValid) return
   await upsertAppointment(db, appointmentForm.value)
+  resetForm()
   isAddAppointment.value = false
 }
 
@@ -192,7 +193,8 @@ async function updateAppointement(calendarEvent: CalendarEventExternal) {
   const event = appointments.value.find((a) => a.id === calendarEvent.id)
   if (!event) return
   appointmentForm.value = { ...event }
-  isAddAppointment.value = true
+  resetForm()
+  isAddAppointment.value = false
 }
 
 const formatDate = (date: Date | string) =>
