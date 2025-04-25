@@ -80,7 +80,7 @@
             </template>
           </AppointmentForm>
         </v-dialog>
-        <Calendar :events="eventsItems" @event="updateAppointement" />
+        <Calendar :events="eventsItems" @event="selectAppointementToUpdate" />
       </v-col>
     </v-row>
   </div>
@@ -189,12 +189,11 @@ async function insertAppointement(validation: VForm) {
   isAddAppointment.value = false
 }
 
-async function updateAppointement(calendarEvent: CalendarEventExternal) {
+async function selectAppointementToUpdate(calendarEvent: CalendarEventExternal) {
   const event = appointments.value.find((a) => a.id === calendarEvent.id)
   if (!event) return
   appointmentForm.value = { ...event }
-  resetForm()
-  isAddAppointment.value = false
+  isAddAppointment.value = true
 }
 
 const formatDate = (date: Date | string) =>
