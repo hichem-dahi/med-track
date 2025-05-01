@@ -7,6 +7,8 @@ export async function upsertAssessmentDb(
   assessmentData: Assessment,
 ) {
   if (!db) return
+  //REFACTOR
+  assessmentData.date.setHours(12)
 
   const query = `
     INSERT INTO assessments (id, patient_id, description, date)
