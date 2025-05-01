@@ -1,12 +1,11 @@
 import type { PGlite } from '@electric-sql/pglite'
 
 import m1 from './migrations/init_db_schema.sql?raw'
-import m2 from './migrations/add_appointements_table.sql?raw'
+import m2 from './migrations/add_appointments_table.sql?raw'
 
 const migrations = [
   { name: '01-create_tables', sql: m1 },
-  { name: '01-add_appointements_table', sql: m2 },
-
+  { name: '02-add_appointements_table', sql: m2 },
 ]
 
 export async function migrate(pg: PGlite) {
@@ -35,7 +34,7 @@ export async function migrate(pg: PGlite) {
         INSERT INTO migrations_schema.migrations (name)
         VALUES ($1);
         `,
-        [migration.name]
+        [migration.name],
       )
       console.log(`Applied migration: ${migration.name}`)
     }
