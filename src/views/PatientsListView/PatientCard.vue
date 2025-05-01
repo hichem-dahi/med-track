@@ -29,24 +29,10 @@
         style="line-height: 1.7"
       >
         <v-row class="py-2">
-          <v-col>
+          <v-col cols="6" v-for="(item, i) in patientItems" :key="i">
             <div>
-              <strong>{{ $t('phone') }}:</strong> <br />
-              <a :href="`tel:${patient.phone}`" @click.stop>{{ patient.phone }}</a>
-            </div>
-          </v-col>
-          <v-col>
-            <div>
-              <strong>{{ $t('sex') }}:</strong> <br />
-              <div class="text-capitalize">{{ patient.gender }}</div>
-            </div>
-          </v-col>
-          <v-col>
-            <div>
-              <strong>{{ $t('age') }}:</strong> <br />
-              <div class="text-capitalize">
-                {{ calculateAge(patient.birthday) }}
-              </div>
+              <strong>{{ item.title }}:</strong> <br />
+              <div class="text-capitalize">{{ item.value }}</div>
             </div>
           </v-col>
         </v-row>
@@ -88,6 +74,13 @@ import { deletePatientDb } from '@/pglite/queries/patients/deletePatientDb'
 import type { Patient } from '@/models/models'
 import type { VForm } from 'vuetify/components'
 
+const formatDate = (date: Date | string) =>
+  new Date(date || 0).toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+
 const { t } = useI18n()
 
 const isEdit = ref(false)
@@ -112,6 +105,13 @@ const props = defineProps<{ patient: Patient }>()
 
 const form = ref({ ...props.patient })
 
+const patientItems = ref([
+  { title: t('phone'), value: props.patient.phone },
+  { title: t('sex'), value: t(props.patient.gender) },
+  { title: t('age'), value: calculateAge(props.patient.birthday) },
+  { title: t('first-consultation'), value: formatDate(props.patient.first_consultation_date) },
+])
+
 const editPatient = async (validation: VForm) => {
   validation.validate()
   if (!validation.isValid) return
@@ -122,13 +122,6 @@ const editPatient = async (validation: VForm) => {
 const removePatient = async () => {
   if (props.patient.id) await deletePatientDb(db, props.patient.id)
 }
-
-const formatDate = (date: Date | string) =>
-  new Date(date || 0).toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
 
 function calculateAge(birthday: Date | string): number {
   const birthDate = new Date(birthday)
