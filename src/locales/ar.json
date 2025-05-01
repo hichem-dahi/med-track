@@ -35,5 +35,6 @@
     "schedule": "الجدول",
     "no-patients-found": "لم يتم العثور على مرضى",
     "male": "ذكر",
-    "female": "أنثى"
+    "female": "أنثى",
+    "first-consultation": "الاستشارة الأولى"
 }

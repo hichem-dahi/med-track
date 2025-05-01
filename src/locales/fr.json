@@ -35,5 +35,6 @@
     "schedule": "Emploi du temps",
     "no-patients-found": "Aucun patient trouvé",
     "male": "Homme",
-    "female": "Femme"
+    "female": "Femme",
+    "first-consultation": "Première consultation"
 }
