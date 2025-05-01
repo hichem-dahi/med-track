@@ -16,7 +16,7 @@ import type { VForm } from 'vuetify/components'
 
 import PatientForm from '@/components/PatientForm.vue'
 
-import { upsertPatient } from '@/pglite/queries/patients/upsertPatients'
+import { upsertPatientDb } from '@/pglite/queries/patients/upsertPatientsDb'
 
 import { type Patient } from '@/models/models'
 
@@ -35,7 +35,7 @@ const form = ref<Patient>({
 async function addPatient(validation: VForm) {
   validation.validate()
   if (validation.isValid) {
-    await upsertPatient(db, form.value)
+    await upsertPatientDb(db, form.value)
     router.go(-1)
   }
 }

@@ -82,8 +82,8 @@ import { useI18n } from 'vue-i18n'
 import PatientForm from '@/components/PatientForm.vue'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
 
-import { upsertPatient } from '@/pglite/queries/patients/upsertPatients'
-import { deletePatient } from '@/pglite/queries/patients/deletePatient'
+import { upsertPatientDb } from '@/pglite/queries/patients/upsertPatientsDb'
+import { deletePatientDb } from '@/pglite/queries/patients/deletePatientDb'
 
 import type { Patient } from '@/models/models'
 import type { VForm } from 'vuetify/components'
@@ -115,12 +115,12 @@ const form = ref({ ...props.patient })
 const editPatient = async (validation: VForm) => {
   validation.validate()
   if (!validation.isValid) return
-  await upsertPatient(db, { ...form.value })
+  await upsertPatientDb(db, { ...form.value })
   isEdit.value = false
 }
 
 const removePatient = async () => {
-  if (props.patient.id) await deletePatient(db, props.patient.id)
+  if (props.patient.id) await deletePatientDb(db, props.patient.id)
 }
 
 const formatDate = (date: Date | string) =>

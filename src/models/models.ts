@@ -8,7 +8,6 @@ export interface Patient {
   medical_history: string
 }
 
-
 // Assessment.ts
 export interface Assessment {
   id: string
@@ -22,5 +21,7 @@ export interface Appointment {
   patient_id: string
   start_time: Date | string // e.g. "2025-04-20T11:00"
   end_time: Date | string // e.g. "2025-04-20T21:00"
+  is_select_time: boolean
   description: string
+  checked: boolean
 }

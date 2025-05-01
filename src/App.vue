@@ -1,26 +1,12 @@
 <template>
-  <v-responsive class="border rounded">
-    <v-app>
-      <AppBar />
-      <SideBar v-model="drawer" />
-      <v-main>
-        <v-container>
-          <RouterView />
-        </v-container>
-      </v-main>
-    </v-app>
-  </v-responsive>
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-import AppBar from './components/AppBar.vue'
-import SideBar from './components/SideBar.vue'
-
-import { providePGlite } from '@electric-sql/pglite-vue'
-import { type LiveNamespace, live } from '@electric-sql/pglite/live'
 import { PGliteWorker } from '@electric-sql/pglite/worker'
+import { providePGlite } from '@electric-sql/pglite-vue'
+
+import { type LiveNamespace, live } from '@electric-sql/pglite/live'
 
 type PGliteWithLive = PGliteWorker & { live: LiveNamespace }
 
@@ -34,13 +20,5 @@ const db = new PGliteWorker(
 ) as PGliteWithLive
 
 providePGlite(db)
-
-const drawer = ref(true)
-
-onMounted(() => {
-  setTimeout(() => {
-    drawer.value = true
-  }, 100)
-})
 </script>
 <style></style>

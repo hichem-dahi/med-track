@@ -12,23 +12,23 @@ import { injectPGlite } from '@electric-sql/pglite-vue'
 
 import AssessmentForm from '@/components/AssessmentForm.vue'
 
-import { defaultForm } from './state'
+import { defaultForm } from './assessmentState'
 
 import type { Assessment } from '@/models/models'
 
-import { upsertAssessment } from '@/pglite/queries/assessments/upsertAssessment'
+import { upsertAssessmentDb } from '@/pglite/queries/assessments/upsertAssessmentDb'
 
 const db = injectPGlite()
 
 const isDialog = defineModel<boolean>('dialog')
 
-const model = defineModel<Assessment>('form',{
+const model = defineModel<Assessment>('form', {
   default: defaultForm(),
 })
 
 async function addAssessment(isValid: boolean) {
   if (!isValid) return
-  await upsertAssessment(db, model.value)
+  await upsertAssessmentDb(db, model.value)
   isDialog.value = false
 }
 </script>
