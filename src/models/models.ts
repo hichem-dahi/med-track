@@ -6,6 +6,7 @@ export interface Patient {
   gender: 'male' | 'female'
   phone: string
   medical_history: string
+  first_consultation_date: Date
 }
 
 // Assessment.ts

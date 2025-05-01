@@ -45,6 +45,15 @@
           :label="$t('medical-history')"
           auto-grow
         />
+
+        <v-date-input
+          v-model="model.first_consultation_date"
+          :label="$t('first-consultation-date')"
+          prepend-icon=""
+          prepend-inner-icon="$calendar"
+          :rules="[rules.date]"
+          required
+        ></v-date-input>
       </v-form>
     </v-card-text>
 
@@ -72,6 +81,7 @@ const model = defineModel<Patient>({
     birthday: '',
     gender: '',
     medical_history: '',
+    first_consultation_date: new Date(),
   },
 })
 

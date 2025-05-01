@@ -30,6 +30,7 @@ const form = ref<Patient>({
   birthday: new Date(),
   gender: 'male',
   medical_history: '',
+  first_consultation_date: new Date(),
 })
 
 async function addPatient(validation: VForm) {

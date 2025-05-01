@@ -5,6 +5,7 @@ CREATE TABLE patients (
   gender TEXT CHECK (gender IN ('male', 'female')),
   phone TEXT,
   medical_history TEXT,
+  first_consultation_date DATE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

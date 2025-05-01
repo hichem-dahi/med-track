@@ -7,16 +7,18 @@ export async function upsertPatientDb(
   patientData: Patient,
 ) {
   if (!db) return
+
   const query = `
-    INSERT INTO patients (id, name, birthday, gender, phone, medical_history)
-    VALUES (COALESCE($1, gen_random_uuid()), $2, $3, $4, $5, $6)
+    INSERT INTO patients (id, name, birthday, gender, phone, medical_history, first_consultation_date)
+    VALUES (COALESCE($1, gen_random_uuid()), $2, $3, $4, $5, $6, $7)
     ON CONFLICT (id)
     DO UPDATE SET
       name = EXCLUDED.name,
       birthday = EXCLUDED.birthday,
       gender = EXCLUDED.gender,
       phone = EXCLUDED.phone,
-      medical_history = EXCLUDED.medical_history
+      medical_history = EXCLUDED.medical_history,
+      first_consultation_date = EXCLUDED.first_consultation_date
   `
 
   await db.query(query, [
@@ -26,5 +28,6 @@ export async function upsertPatientDb(
     patientData.gender,
     patientData.phone,
     patientData.medical_history,
+    patientData.first_consultation_date,
   ])
 }
