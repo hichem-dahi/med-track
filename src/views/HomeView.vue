@@ -1,7 +1,7 @@
 <template>
   <v-responsive>
     <v-app style="background: linear-gradient(135deg, #f9ffff, #fafafc)">
-      <AppBar />
+      <AppBar v-model="drawer" />
       <SideBar v-model="drawer" />
       <v-main>
         <v-container>
