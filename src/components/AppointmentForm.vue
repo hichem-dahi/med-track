@@ -1,26 +1,28 @@
 <template>
   <v-card class="pa-4" max-width="600">
-    <v-form ref="formRef">
+    <v-form ref="formRef" validate-on="submit lazy">
       <v-text-field v-model="model.description" :label="$t('description')" />
 
       <v-date-input v-model="form.date" :label="$t('select-a-date')" :rules="[rules.required]" />
-
+      <v-checkbox :label="$t('select-time')" v-model="model.is_select_time"></v-checkbox>
       <div class="d-flex ga-5">
         <v-text-field
+          :disabled="!model.is_select_time"
           type="time"
           v-model="form.startTime"
           :label="$t('start-time')"
-          :rules="[rules.required, rules.timeOrder, rules.noOverlap]"
+          :rules="model.is_select_time ? [rules.required, rules.timeOrder, rules.noOverlap] : []"
         />
         <v-text-field
+          :disabled="!model.is_select_time"
           type="time"
           v-model="form.endTime"
           :label="$t('end-time')"
-          :rules="[rules.required]"
+          :rules="model.is_select_time ? [rules.required] : []"
         />
       </div>
-      <slot name="actions" :validation="formRef" />
     </v-form>
+    <slot name="actions" :validation="formRef" />
   </v-card>
 </template>
 
@@ -42,6 +44,7 @@ const model = defineModel<Appointment>({
     description: '',
     start_time: '',
     end_time: '',
+    is_select_time: true,
   },
 })
 
@@ -52,13 +55,14 @@ const form = reactive({
   startTime: model.value.start_time ? format(new Date(model.value.start_time), 'HH:mm') : '12:00',
   endTime: model.value.start_time ? format(new Date(model.value.end_time), 'HH:mm') : '12:00',
 })
+
 // Combine date + time into ISO datetime strings
 watch(
   () => [form.date, form.startTime, form.endTime],
   ([newDate, start, end]) => {
     const dateStr = format(newDate, 'yyyy-MM-dd')
-    model.value.start_time = dateStr && start ? `${dateStr}T${start}` : ''
-    model.value.end_time = dateStr && end ? `${dateStr}T${end}` : ''
+    model.value.start_time = dateStr && start ? new Date(`${dateStr}T${start}`) : ''
+    model.value.end_time = dateStr && end ? new Date(`${dateStr}T${end}`) : ''
     date.value = new Date(newDate)
   },
   { immediate: true },

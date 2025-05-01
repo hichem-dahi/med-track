@@ -2,9 +2,9 @@ import type { Transaction } from '@electric-sql/pglite'
 import type { PGliteWithLive } from '@electric-sql/pglite/live'
 import type { Assessment } from '@/models/models'
 
-export async function upsertAssessment(
+export async function upsertAssessmentDb(
   db: PGliteWithLive | Transaction | undefined,
-  assessmentData: Assessment
+  assessmentData: Assessment,
 ) {
   if (!db) return
 

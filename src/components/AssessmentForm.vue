@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { defaultForm } from '@/views/PatientDetailsView/state'
+import { defaultForm } from '@/views/PatientDetailsView/assessmentState'
 
 import type { Assessment } from '@/models/models'
 

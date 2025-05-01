@@ -76,11 +76,11 @@
         <v-dialog v-model="isAddAppointment" max-width="500">
           <AppointmentForm v-model="appointmentForm">
             <template #actions="{ validation }">
-              <v-btn block @click="insertAppointement(validation)">{{ $t('save') }}</v-btn>
+              <v-btn block @click="upsertAppointment(validation)">{{ $t('save') }}</v-btn>
             </template>
           </AppointmentForm>
         </v-dialog>
-        <Calendar :events="eventsItems" @event="selectAppointementToUpdate" />
+        <Calendar :appointments="appointments" @event="openEventCard" />
       </v-col>
     </v-row>
   </div>
@@ -90,7 +90,6 @@
 import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { injectPGlite, useLiveQuery } from '@electric-sql/pglite-vue'
-import { format } from 'date-fns'
 
 import PatientCard from './PatientsListView/PatientCard.vue'
 import CreateAssessment from './PatientDetailsView/CreateAssessment.vue'
@@ -98,32 +97,24 @@ import AssessmentForm from '@/components/AssessmentForm.vue'
 import AppointmentForm from '@/components/AppointmentForm.vue'
 import Calendar from '@/components/Calendar.vue'
 
-import { form, resetForm } from './PatientDetailsView/state'
+import { form } from './PatientDetailsView/assessmentState'
 
-import { upsertAssessment } from '@/pglite/queries/assessments/upsertAssessment'
-import { deleteAssessment } from '@/pglite/queries/assessments/deleteAssessment'
-import { upsertAppointment } from '@/pglite/queries/appointments/upsertAppointement'
+import { upsertAssessmentDb } from '@/pglite/queries/assessments/upsertAssessmentDb'
+import { deleteAssessmentDb } from '@/pglite/queries/assessments/deleteAssessmentDb'
+import { upsertAppointmentDb } from '@/pglite/queries/appointments/upsertAppointmentDb'
 
-import type { Appointment, Assessment, Patient } from '@/models/models'
 import type { VForm } from 'vuetify/components'
-import type { CalendarEventExternal } from '@schedule-x/calendar'
+import type { Assessment, Patient } from '@/models/models'
+import { appointmentForm, resetAppointmentForm } from './PatientDetailsView/appointmentState'
 
 const db = injectPGlite()
 
 const route = useRoute()
 
 const pickedAssessment = ref<Assessment>()
-
 const isAddAssessment = ref(false)
 const isEditAssessment = ref(false)
 const isAddAppointment = ref(false)
-
-const appointmentForm = ref<Appointment>({
-  patient_id: '',
-  description: '',
-  start_time: '',
-  end_time: '',
-})
 
 const patientsQuery = useLiveQuery<Patient>(`SELECT * FROM patients WHERE id = $1;`, [
   route.params.id,
@@ -132,23 +123,9 @@ const assessmentsQuery = useLiveQuery<Assessment>(
   `SELECT * FROM assessments WHERE patient_id = $1;`,
   [route.params.id],
 )
-const appointmentsQuery = useLiveQuery<Appointment>(
-  `SELECT * FROM appointments WHERE patient_id = $1;`,
-  [route.params.id],
-)
 
 const patient = computed(() => patientsQuery.rows.value?.[0])
 const assessments = computed(() => assessmentsQuery.rows.value || [])
-const appointments = computed(() => appointmentsQuery.rows.value || [])
-const eventsItems = computed(() =>
-  appointments.value.map((a) => ({
-    id: a.id || '',
-    title: patient.value?.name,
-    start: format(a.start_time, 'yyyy-MM-dd HH:mm'),
-    end: format(a.end_time, 'yyyy-MM-dd HH:mm'),
-    description: a.description,
-  })),
-)
 
 const sortedAssessments = computed(() => {
   return [...assessments.value].sort(
@@ -171,29 +148,23 @@ function startEditingAssessment(assessment: Assessment) {
 
 async function editAssessment(isValid: boolean) {
   if (!isValid || !pickedAssessment.value) return
-  await upsertAssessment(db, pickedAssessment.value)
+  await upsertAssessmentDb(db, pickedAssessment.value)
   isEditAssessment.value = false
 }
 
 async function removeAssessment() {
   if (!pickedAssessment.value) return
-  await deleteAssessment(db, pickedAssessment.value.id)
+  await deleteAssessmentDb(db, pickedAssessment.value.id)
   isEditAssessment.value = false
 }
 
-async function insertAppointement(validation: VForm) {
+async function upsertAppointment(validation: VForm) {
   await validation.validate()
   if (!validation.isValid) return
-  await upsertAppointment(db, appointmentForm.value)
-  resetForm()
-  isAddAppointment.value = false
-}
 
-async function selectAppointementToUpdate(calendarEvent: CalendarEventExternal) {
-  const event = appointments.value.find((a) => a.id === calendarEvent.id)
-  if (!event) return
-  appointmentForm.value = { ...event }
-  isAddAppointment.value = true
+  await upsertAppointmentDb(db, appointmentForm.value)
+  resetAppointmentForm()
+  isAddAppointment.value = false
 }
 
 const formatDate = (date: Date | string) =>

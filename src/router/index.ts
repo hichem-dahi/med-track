@@ -12,26 +12,28 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    },
-    {
-      path: '/patients-list',
-      name: 'PatientsList',
-      component: PatientsListView,
-    },
-    {
-      path: '/patient/:id',
-      name: 'PatientDetails',
-      component: PatientDetailsView,
-    },
-    {
-      path: '/create-patient',
-      name: 'CreatePatient',
-      component: CreatePatientView,
-    },
-    {
-      path: '/schedule',
-      name: 'Schedule',
-      component: ScheduleView,
+      children: [
+        {
+          path: '/patients-list',
+          name: 'PatientsList',
+          component: PatientsListView,
+        },
+        {
+          path: '/patient/:id',
+          name: 'PatientDetails',
+          component: PatientDetailsView,
+        },
+        {
+          path: '/create-patient',
+          name: 'CreatePatient',
+          component: CreatePatientView,
+        },
+        {
+          path: '/schedule',
+          name: 'Schedule',
+          component: ScheduleView,
+        },
+      ],
     },
   ],
 })
