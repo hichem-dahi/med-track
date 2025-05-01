@@ -24,10 +24,18 @@
             v-model:dialog="isAddAssessment"
           />
         </v-expand-transition>
-        <div v-if="!isAddAssessment" class="assessments pa-4 text-caption">
-          <v-list class="w-75" v-if="assessments.length" density="compact" style="line-height: 2.5">
+        <div v-if="!isAddAssessment" class="assessments pa-4 text-caption overflow-y-auto">
+          <v-list
+            height="250"
+            class="w-75"
+            v-if="assessments.length"
+            density="compact"
+            style="line-height: 2.5"
+          >
             <v-list-item v-for="assessment in sortedAssessments" :key="assessment.id" class="pa-2">
-              <v-list-item-subtitle>{{ formatDate(assessment.date) }}</v-list-item-subtitle>
+              <v-list-item-subtitle class="pa-3">
+                {{ formatDate(assessment.date) }}
+              </v-list-item-subtitle>
               {{ assessment.description }}
               <template #append>
                 <v-btn
@@ -103,9 +111,10 @@ import { upsertAssessmentDb } from '@/pglite/queries/assessments/upsertAssessmen
 import { deleteAssessmentDb } from '@/pglite/queries/assessments/deleteAssessmentDb'
 import { upsertAppointmentDb } from '@/pglite/queries/appointments/upsertAppointmentDb'
 
+import { appointmentForm, resetAppointmentForm } from './PatientDetailsView/appointmentState'
+
 import type { VForm } from 'vuetify/components'
 import type { Assessment, Patient } from '@/models/models'
-import { appointmentForm, resetAppointmentForm } from './PatientDetailsView/appointmentState'
 
 const db = injectPGlite()
 
