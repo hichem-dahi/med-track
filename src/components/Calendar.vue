@@ -91,7 +91,7 @@ const db = injectPGlite()
 
 const route = useRoute()
 
-const target = ref<EventTarget>()
+const target = ref()
 const menu = ref(false)
 const isAddAppointment = ref(false)
 const selectedApptId = ref<string>()

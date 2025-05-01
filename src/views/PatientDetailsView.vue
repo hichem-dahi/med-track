@@ -80,7 +80,7 @@
             </template>
           </AppointmentForm>
         </v-dialog>
-        <Calendar :appointments="appointments" @event="openEventCard" />
+        <Calendar />
       </v-col>
     </v-row>
   </div>
