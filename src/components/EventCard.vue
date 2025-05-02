@@ -1,12 +1,14 @@
 <template>
-  <v-card class="py-2 px-3" min-width="200">
+  <v-card class="py-2 px-3" min-width="280">
     <template #title>
       <div class="text-body-1">{{ appointment.patient.name }}</div>
     </template>
     <v-card-text class="px-0 text-start">
-      <div class="d-flex align-center" v-for="(item, i) in eventItems" :key="i">
-        <v-icon color="blue-grey-darken-2" size="x-small" class="mx-2" :icon="item.icon" />
-        <div style="line-height: 2" class="text-caption" v-html="item.title" />
+      <div v-for="(item, i) in eventItems" :key="i">
+        <div v-if="item.title" class="d-flex align-center">
+          <v-icon color="blue-grey-darken-2" size="x-small" class="mx-2" :icon="item.icon" />
+          <div style="line-height: 2" class="text-caption" v-html="item.title" />
+        </div>
       </div>
     </v-card-text>
     <template #append>
