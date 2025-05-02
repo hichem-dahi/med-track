@@ -17,6 +17,13 @@ export interface Assessment {
   date: Date // ISO date string (e.g. "2025-04-20")
 }
 
+export interface Treatment {
+  id: string
+  patient_id: string
+  description: string
+  date: Date // ISO date string (e.g. "2025-04-20")
+}
+
 export interface Appointment {
   id?: string
   patient_id: string
