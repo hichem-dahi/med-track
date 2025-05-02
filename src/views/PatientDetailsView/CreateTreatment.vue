@@ -14,7 +14,7 @@ import TreatmentForm from '@/components/TreatmentForm.vue'
 
 import { upsertTreatmentDb } from '@/pglite/queries/treatments/upsertTreatmentDb'
 
-import { defaultForm } from './treatmentState'
+import { defaultForm, resetForm } from './treatmentState'
 
 import type { Treatment } from '@/models/models'
 
@@ -29,6 +29,7 @@ const model = defineModel<Treatment>('form', {
 async function addTreatment(isValid: boolean) {
   if (!isValid) return
   await upsertTreatmentDb(db, model.value)
+  resetForm()
   isDialog.value = false
 }
 </script>

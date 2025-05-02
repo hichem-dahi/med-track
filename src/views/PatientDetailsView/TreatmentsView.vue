@@ -8,48 +8,42 @@
     <CreateTreatment v-show="isAddTreatment" v-model:form="form" v-model:dialog="isAddTreatment" />
   </v-expand-transition>
   <div v-if="!isAddTreatment" class="Treatments pa-4 text-caption overflow-y-auto">
-    <v-list
-      height="250"
-      class="w-75"
-      v-if="treatments.length"
-      density="compact"
-      style="line-height: 2.5"
-    >
-      <v-list-item v-for="treatment in sortedTreatments" :key="treatment.id" class="pa-2">
-        <v-list-item-subtitle class="pa-3">
-          {{ formatDate(treatment.date) }}
-        </v-list-item-subtitle>
-        {{ treatment.description }}
-        <template #append>
-          <v-btn
-            size="small"
-            elevation="0"
-            icon="mdi-square-edit-outline"
-            @click="startEditingTreatment(treatment)"
-          />
-          <v-dialog v-model="isEditTreatment" max-width="500">
-            <TreatmentForm :title="$t('modify-Treatment')" v-model="pickedTreatment">
-              <template #actions="{ isValid }">
-                <div class="d-flex align-end justify-space-between gap-3">
-                  <v-btn size="small" variant="tonal" color="red" @click="removeTreatment">
-                    {{ $t('delete') }}
-                  </v-btn>
-                  <v-btn
-                    size="small"
-                    variant="tonal"
-                    color="primary"
-                    @click="editTreatment(isValid)"
-                  >
-                    {{ $t('save') }}
-                  </v-btn>
-                </div>
-              </template>
-            </TreatmentForm>
-          </v-dialog>
-        </template>
-      </v-list-item>
-      <v-divider></v-divider>
-    </v-list>
+    <v-sheet height="300" class="w-75" v-if="treatments.length">
+      <v-card v-for="treatment in sortedTreatments" :key="treatment.id" class="mb-3" elevation="1">
+        <v-card-text>
+          <div class="d-flex justify-space-between align-center">
+            <div>
+              <div class="text-caption text-grey">{{ formatDate(treatment.date) }}</div>
+              <div class="mt-2">{{ treatment.description }}</div>
+            </div>
+            <div>
+              <v-btn
+                size="small"
+                elevation="0"
+                icon="mdi-square-edit-outline"
+                @click="startEditingTreatment(treatment)"
+              />
+            </div>
+          </div>
+        </v-card-text>
+
+        <!-- Edit Dialog -->
+        <v-dialog v-model="isEditTreatment" max-width="500">
+          <TreatmentForm :title="$t('modify-Treatment')" v-model="pickedTreatment">
+            <template #actions="{ isValid }">
+              <div class="d-flex align-end justify-space-between gap-3">
+                <v-btn size="small" variant="tonal" color="red" @click="removeTreatment">
+                  {{ $t('delete') }}
+                </v-btn>
+                <v-btn size="small" variant="tonal" color="primary" @click="editTreatment(isValid)">
+                  {{ $t('save') }}
+                </v-btn>
+              </div>
+            </template>
+          </TreatmentForm>
+        </v-dialog>
+      </v-card>
+    </v-sheet>
     <div v-else class="text-grey mt-2">{{ $t('no-treatments-msg') }}</div>
   </div>
 </template>
@@ -64,7 +58,7 @@ import TreatmentForm from '@/components/TreatmentForm.vue'
 import { deleteTreatmentDb } from '@/pglite/queries/treatments/deleteTreatmentDb'
 import { upsertTreatmentDb } from '@/pglite/queries/treatments/upsertTreatmentDb'
 
-import { form } from './treatmentState'
+import { form, resetForm } from './treatmentState'
 
 import type { Treatment } from '@/models/models'
 
@@ -98,6 +92,7 @@ function startEditingTreatment(Treatment: Treatment) {
 async function editTreatment(isValid: boolean) {
   if (!isValid || !pickedTreatment.value) return
   await upsertTreatmentDb(db, pickedTreatment.value)
+  resetForm()
   isEditTreatment.value = false
 }
 

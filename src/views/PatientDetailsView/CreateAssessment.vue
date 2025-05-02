@@ -12,7 +12,7 @@ import { injectPGlite } from '@electric-sql/pglite-vue'
 
 import AssessmentForm from '@/components/AssessmentForm.vue'
 
-import { defaultForm } from './assessmentState'
+import { defaultForm, resetForm } from './assessmentState'
 
 import type { Assessment } from '@/models/models'
 
@@ -29,6 +29,7 @@ const model = defineModel<Assessment>('form', {
 async function addAssessment(isValid: boolean) {
   if (!isValid) return
   await upsertAssessmentDb(db, model.value)
+  resetForm()
   isDialog.value = false
 }
 </script>

@@ -12,48 +12,52 @@
     />
   </v-expand-transition>
   <div v-if="!isAddAssessment" class="assessments pa-4 text-caption overflow-y-auto">
-    <v-list
-      height="250"
-      class="w-75"
-      v-if="assessments.length"
-      density="compact"
-      style="line-height: 2.5"
-    >
-      <v-list-item v-for="assessment in sortedAssessments" :key="assessment.id" class="pa-2">
-        <v-list-item-subtitle class="pa-3">
-          {{ formatDate(assessment.date) }}
-        </v-list-item-subtitle>
-        {{ assessment.description }}
-        <template #append>
-          <v-btn
-            size="small"
-            elevation="0"
-            icon="mdi-square-edit-outline"
-            @click="startEditingAssessment(assessment)"
-          />
-          <v-dialog v-model="isEditAssessment" max-width="500">
-            <AssessmentForm :title="$t('modify-assessment')" v-model="pickedAssessment">
-              <template #actions="{ isValid }">
-                <div class="d-flex align-end justify-space-between gap-3">
-                  <v-btn size="small" variant="tonal" color="red" @click="removeAssessment">
-                    {{ $t('delete') }}
-                  </v-btn>
-                  <v-btn
-                    size="small"
-                    variant="tonal"
-                    color="primary"
-                    @click="editAssessment(isValid)"
-                  >
-                    {{ $t('save') }}
-                  </v-btn>
-                </div>
-              </template>
-            </AssessmentForm>
-          </v-dialog>
-        </template>
-      </v-list-item>
-      <v-divider></v-divider>
-    </v-list>
+    <v-sheet height="300" class="w-75" v-if="assessments.length">
+      <v-card
+        v-for="assessment in sortedAssessments"
+        :key="assessment.id"
+        class="mb-3"
+        elevation="1"
+      >
+        <v-card-text>
+          <div class="d-flex justify-space-between align-center">
+            <div>
+              <div class="text-caption text-grey">{{ formatDate(assessment.date) }}</div>
+              <div class="mt-2">{{ assessment.description }}</div>
+            </div>
+            <div>
+              <v-btn
+                size="small"
+                elevation="0"
+                icon="mdi-square-edit-outline"
+                @click="startEditingAssessment(assessment)"
+              />
+            </div>
+          </div>
+        </v-card-text>
+
+        <!-- Edit Dialog -->
+        <v-dialog v-model="isEditAssessment" max-width="500">
+          <AssessmentForm :title="$t('modify-Assessment')" v-model="pickedAssessment">
+            <template #actions="{ isValid }">
+              <div class="d-flex align-end justify-space-between gap-3">
+                <v-btn size="small" variant="tonal" color="red" @click="removeAssessment">
+                  {{ $t('delete') }}
+                </v-btn>
+                <v-btn
+                  size="small"
+                  variant="tonal"
+                  color="primary"
+                  @click="editAssessment(isValid)"
+                >
+                  {{ $t('save') }}
+                </v-btn>
+              </div>
+            </template>
+          </AssessmentForm>
+        </v-dialog>
+      </v-card>
+    </v-sheet>
     <div v-else class="text-grey mt-2">{{ $t('no-assessments-msg') }}</div>
   </div>
 </template>
@@ -68,7 +72,7 @@ import AssessmentForm from '@/components/AssessmentForm.vue'
 import { deleteAssessmentDb } from '@/pglite/queries/assessments/deleteAssessmentDb'
 import { upsertAssessmentDb } from '@/pglite/queries/assessments/upsertAssessmentDb'
 
-import { form } from './assessmentState'
+import { form, resetForm } from './assessmentState'
 
 import type { Assessment } from '@/models/models'
 
@@ -86,6 +90,7 @@ const assessmentsQuery = useLiveQuery<Assessment>(
   `SELECT * FROM assessments WHERE patient_id = $1;`,
   [props.patientId],
 )
+
 const assessments = computed(() => assessmentsQuery.rows.value || [])
 
 const sortedAssessments = computed(() => {
@@ -102,6 +107,7 @@ function startEditingAssessment(assessment: Assessment) {
 async function editAssessment(isValid: boolean) {
   if (!isValid || !pickedAssessment.value) return
   await upsertAssessmentDb(db, pickedAssessment.value)
+  resetForm()
   isEditAssessment.value = false
 }
 
