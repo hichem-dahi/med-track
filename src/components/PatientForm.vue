@@ -48,7 +48,7 @@
 
         <v-date-input
           v-model="model.first_consultation_date"
-          :label="$t('first-consultation-date')"
+          :label="$t('first-consultation')"
           prepend-icon=""
           prepend-inner-icon="$calendar"
           :rules="[rules.date]"
