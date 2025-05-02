@@ -36,5 +36,13 @@
     "no-patients-found": "Aucun patient trouvé",
     "male": "Homme",
     "female": "Femme",
-    "first-consultation": "Première consultation"
+    "first-consultation": "Première consultation",
+    "add-treatment": "Ajouter une conduite à tenir",
+    "treatments": "Conduites à tenir",
+    "new-treatment": "Nouveau conduite à tenir",
+    "no-treatments-msg": "Aucune conduite à tenir trouvé pour ce patient.",
+    "first-consultation-date": "Date de la première consultation",
+    "start-time": "Heure de début",
+    "end-time": "Heure de fin",
+    "select-time": "Sélectionner l'heure"
 }

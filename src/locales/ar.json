@@ -36,5 +36,13 @@
     "no-patients-found": "لم يتم العثور على مرضى",
     "male": "ذكر",
     "female": "أنثى",
-    "first-consultation": "الاستشارة الأولى"
+    "first-consultation": "الاستشارة الأولى",
+    "add-treatment": "إضافة علاج",
+    "treatments": "العلاجات",
+    "new-treatment": "علاج جديد",
+    "no-treatments-msg": "لا توجد علاجات لهذا المريض.",
+    "first-consultation-date": "تاريخ أول استشارة",
+    "start-time": "وقت البدء",
+    "end-time": "وقت الانتهاء",
+    "select-time": "اختر الوقت"
 }
