@@ -14,11 +14,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import AppBar from '@/components/AppBar.vue'
 import SideBar from '@/components/SideBar.vue'
 import BannerBar from '@/components/BannerBar.vue'
 
+const route = useRoute()
+const router = useRouter()
+
 const drawer = ref(false)
+
+onMounted(() => {
+  if (route.path == '/') router.push({ name: 'Schedule' })
+})
 </script>
