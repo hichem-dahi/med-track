@@ -73,6 +73,8 @@
 import { computed, ref } from 'vue'
 import { injectPGlite, useLiveQuery } from '@electric-sql/pglite-vue'
 
+import { formatDate } from '@/utils/utils'
+
 import CreateAssessment from './CreateAssessment.vue'
 import AssessmentForm from '@/components/AssessmentForm.vue'
 
@@ -123,11 +125,4 @@ async function removeAssessment() {
   await deleteAssessmentDb(db, pickedAssessment.value.id)
   isEditAssessment.value = false
 }
-
-const formatDate = (date: Date | string) =>
-  new Date(date || 0).toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
 </script>
