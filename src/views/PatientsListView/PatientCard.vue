@@ -8,9 +8,9 @@
 
         <v-list density="compact">
           <v-list-item v-for="(item, i) in items" :key="i" :value="i" @click="item.function">
-            <v-btn variant="text" size="small" :prepend-icon="item.icon" @click="item.function">{{
-              item.title
-            }}</v-btn>
+            <v-btn variant="text" size="small" :prepend-icon="item.icon" @click="item.function">
+              {{ item.title }}
+            </v-btn>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -25,14 +25,14 @@
     </template>
     <template #text>
       <div
-        class="text-caption text-blue-grey-darken-3 text-medium-emphasis"
+        class="text-body-2 text-blue-grey-darken-3 text-medium-emphasis"
         style="line-height: 1.7"
       >
         <v-row class="py-2">
           <v-col cols="6" v-for="(item, i) in patientItems" :key="i">
             <div>
               <strong>{{ item.title }}:</strong> <br />
-              <div class="text-capitalize">{{ item.value }}</div>
+              <div class="text-capitalize" v-html="item.html" />
             </div>
           </v-col>
         </v-row>
@@ -106,10 +106,10 @@ const props = defineProps<{ patient: Patient }>()
 const form = ref({ ...props.patient })
 
 const patientItems = ref([
-  { title: t('phone'), value: props.patient.phone },
-  { title: t('sex'), value: t(props.patient.gender) },
-  { title: t('age'), value: calculateAge(props.patient.birthday) },
-  { title: t('first-consultation'), value: formatDate(props.patient.first_consultation_date) },
+  { title: t('phone'), html: `<a href="tel:${props.patient.phone}">${props.patient.phone}</a>` },
+  { title: t('sex'), html: t(props.patient.gender) },
+  { title: t('age'), html: calculateAge(props.patient.birthday) },
+  { title: t('first-consultation'), html: formatDate(props.patient.first_consultation_date) },
 ])
 
 const editPatient = async (validation: VForm) => {
