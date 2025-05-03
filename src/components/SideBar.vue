@@ -10,6 +10,17 @@
       ></v-list-item>
     </v-list>
   </v-navigation-drawer>
+  <v-bottom-navigation v-if="$vuetify.display.mobile">
+    <v-btn
+      v-for="(item, i) in items"
+      :key="i"
+      :value="i"
+      @click="$router.push({ name: item.route_name })"
+      :prepend-icon="item.icon"
+    >
+      <span>{{ item.title }}</span>
+    </v-btn>
+  </v-bottom-navigation>
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
