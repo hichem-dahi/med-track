@@ -33,6 +33,7 @@ import {
   createViewMonthAgenda,
   createViewMonthGrid,
   createViewWeek,
+  viewMonthGrid,
   type CalendarEventExternal,
 } from '@schedule-x/calendar'
 
@@ -56,6 +57,7 @@ const calendarApp = createCalendar({
     start: '06:00',
     end: '18:00',
   },
+  defaultView: viewMonthGrid.name,
   selectedDate: new Date().toISOString().split('T')[0],
   views: [createViewDay(), createViewWeek(), createViewMonthGrid(), createViewMonthAgenda()],
   firstDayOfWeek: 0,
