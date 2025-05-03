@@ -14,17 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 import AppBar from '@/components/AppBar.vue'
 import SideBar from '@/components/SideBar.vue'
 import BannerBar from '@/components/BannerBar.vue'
 
 const drawer = ref(false)
-
-onMounted(() => {
-  setTimeout(() => {
-    drawer.value = true
-  }, 100)
-})
 </script>
