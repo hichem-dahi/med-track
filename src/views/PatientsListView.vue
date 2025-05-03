@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-center justify-space-between">
+  <div class="d-flex align-center justify-space-between pa-4">
     <h3>{{ $t('patients-list') }}</h3>
     <v-btn size="small" variant="tonal" @click="$router.push({ name: 'CreatePatient' })">
       {{ $t('add-patient') }}
@@ -20,7 +20,7 @@
             color="primary"
             @click="$router.push({ name: 'PatientDetails', params: { id: patient.id } })"
           >
-            {{ $t('view-assessments') }}
+            {{ $t('view-patient') }}
           </v-btn>
         </template>
       </PatientCard>
