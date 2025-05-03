@@ -1,8 +1,11 @@
 <template>
   <div v-if="patient">
     <v-row>
+      <div class="text-h5 pa-4">{{ $t('patient-info') }}</div>
+    </v-row>
+    <v-row>
       <v-col cols="12" md="5">
-        <PatientCard elevation="0" :patient="patient" />
+        <PatientCard elevation="0" variant="text" :patient="patient" />
       </v-col>
       <v-divider vertical />
 
@@ -22,8 +25,10 @@
         </v-tabs-window>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row style="margin-top: 80px">
       <v-col>
+        <div class="text-h6 py-4">{{ $t('schedule') }}</div>
+
         <v-btn
           class="my-3"
           size="small"
