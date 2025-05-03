@@ -77,9 +77,26 @@ const tab = ref()
 
 const isAddAppointment = ref(false)
 
-const patientsQuery = useLiveQuery<Patient>(`SELECT * FROM patients WHERE id = $1;`, [
-  route.params.id,
-])
+const patientsQuery = useLiveQuery<Patient>(
+  `
+  SELECT
+    patients.*,
+    COALESCE(
+      jsonb_agg(
+        jsonb_build_object(
+          'id', patient_images.id,
+          'image_url', patient_images.image_url,
+          'description', patient_images.description
+        )
+      ) FILTER (WHERE patient_images.id IS NOT NULL), '[]'::jsonb
+    ) AS images
+  FROM patients
+  LEFT JOIN patient_images ON patient_images.patient_id = patients.id
+  WHERE patients.id = $1
+  GROUP BY patients.id;
+  `,
+  [route.params.id],
+)
 
 const patient = computed(() => patientsQuery.rows.value?.[0])
 

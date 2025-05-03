@@ -56,6 +56,39 @@
         </template>
       </PatientForm>
     </v-dialog>
+    <v-dialog v-model="isImages" max-width="400">
+      <v-card>
+        <v-card-text>
+          <v-carousel
+            height="300"
+            v-if="patient.images && patient.images.length > 0"
+            :show-arrows="false"
+          >
+            <v-carousel-item
+              v-for="(image, index) in patient.images"
+              :key="index"
+              :src="image.image_url"
+            >
+              <template #sources>
+                <div class="text-end">
+                  <v-btn
+                    v-if="image.id"
+                    variant="text"
+                    icon="mdi-delete"
+                    @click="deleteImage(image.id)"
+                  />
+                </div>
+              </template>
+            </v-carousel-item>
+          </v-carousel>
+          <p v-else>No images available</p>
+        </v-card-text>
+        <v-file-upload v-model="imagesFiles" multiple density="compact" />
+        <v-card-actions>
+          <v-btn :loading="isLoading" @click="upsertImages">{{ $t('upload') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <ConfirmDeleteModal v-model="isDelete" @confirm="removePatient" />
   </v-card>
 </template>
@@ -65,32 +98,37 @@ import { ref } from 'vue'
 import { injectPGlite } from '@electric-sql/pglite-vue'
 import { useI18n } from 'vue-i18n'
 
+import { calculateAge, fileToBase64, formatDate } from '@/utils/utils'
+
 import PatientForm from '@/components/PatientForm.vue'
 import ConfirmDeleteModal from '@/components/ConfirmDeleteModal.vue'
 
 import { upsertPatientDb } from '@/pglite/queries/patients/upsertPatientsDb'
 import { deletePatientDb } from '@/pglite/queries/patients/deletePatientDb'
+import { upsertPatientImagesDb } from '@/pglite/queries/patient_images/upsertPatientImagesDb'
+import { deletePatientImagesDb } from '@/pglite/queries/patient_images/deletePatientImagesDb'
 
-import type { Patient } from '@/models/models'
+import type { Patient, PatientImage } from '@/models/models'
 import type { VForm } from 'vuetify/components'
-
-const formatDate = (date: Date | string) =>
-  new Date(date || 0).toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
 
 const { t } = useI18n()
 
 const isEdit = ref(false)
 const isDelete = ref(false)
+const isImages = ref(false)
+const isLoading = ref(false)
+const imagesFiles = ref<File[]>([])
 
 const items = [
   {
     title: t('edit'),
     icon: 'mdi-pencil',
     function: () => (isEdit.value = true),
+  },
+  {
+    title: t('images'),
+    icon: 'mdi-image-plus',
+    function: () => (isImages.value = true),
   },
   {
     title: t('delete'),
@@ -119,22 +157,30 @@ const editPatient = async (validation: VForm) => {
   isEdit.value = false
 }
 
-const removePatient = async () => {
-  if (props.patient.id) await deletePatientDb(db, props.patient.id)
+async function upsertImages() {
+  const patient_id = props.patient.id
+  if (!imagesFiles.value?.length || !patient_id) return
+
+  isLoading.value = true
+  const form: PatientImage[] = await Promise.all(
+    imagesFiles.value.map(async (f) => {
+      const base64 = await fileToBase64(f) // Await the Base64 conversion
+      return {
+        patient_id,
+        image_url: base64,
+        description: '', // Add description if needed
+      }
+    }),
+  )
+
+  await upsertPatientImagesDb(db, form)
+  isLoading.value = false
 }
 
-function calculateAge(birthday: Date | string): number {
-  const birthDate = new Date(birthday)
-  const today = new Date()
-
-  let age = today.getFullYear() - birthDate.getFullYear()
-  const monthDiff = today.getMonth() - birthDate.getMonth()
-  const dayDiff = today.getDate() - birthDate.getDate()
-
-  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-    age--
-  }
-
-  return age
+async function deleteImage(id: string) {
+  await deletePatientImagesDb(db, [id])
+}
+const removePatient = async () => {
+  if (props.patient.id) await deletePatientDb(db, props.patient.id)
 }
 </script>

@@ -7,6 +7,7 @@ export interface Patient {
   phone: string
   medical_history: string
   first_consultation_date: Date
+  images?: PatientImage[]
 }
 
 // Assessment.ts
@@ -32,4 +33,11 @@ export interface Appointment {
   is_select_time: boolean
   description: string
   checked: boolean
+}
+
+export interface PatientImage {
+  id?: string
+  patient_id: string
+  image_url: string
+  description: string
 }

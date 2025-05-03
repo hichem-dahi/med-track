@@ -3,11 +3,13 @@ import type { PGlite } from '@electric-sql/pglite'
 import m1 from './migrations/init_db_schema.sql?raw'
 import m2 from './migrations/add_appointments_table.sql?raw'
 import m3 from './migrations/add_treatments_table.sql?raw'
+import m4 from './migrations/add_patient_images_table.sql?raw'
 
 const migrations = [
   { name: '01-create_tables', sql: m1 },
   { name: '02-add_appointements_table', sql: m2 },
   { name: '03-add_treatments_table', sql: m3 },
+  { name: '04-add_patient_images_table', sql: m4 },
 ]
 
 export async function migrate(pg: PGlite) {
