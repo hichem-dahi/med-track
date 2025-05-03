@@ -44,5 +44,8 @@
     "first-consultation-date": "تاريخ أول استشارة",
     "start-time": "وقت البدء",
     "end-time": "وقت الانتهاء",
-    "select-time": "اختر الوقت"
+    "select-time": "اختر الوقت",
+    "view-patient": "عرض المريض",
+    "modify-treatment": "تعديل العلاج",
+    "patient-info": "معلومات المريض"
 }

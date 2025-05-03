@@ -44,5 +44,8 @@
     "first-consultation-date": "Date de la première consultation",
     "start-time": "Heure de début",
     "end-time": "Heure de fin",
-    "select-time": "Sélectionner l'heure"
+    "select-time": "Sélectionner l'heure",
+    "view-patient": "Voir le patient",
+    "modify-treatment": "Modifier la conduite à tenir",
+    "patient-info": "Informations du patient"
 }
