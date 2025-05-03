@@ -98,7 +98,7 @@ const patientsQuery = useLiveQuery<Patient>(
   [route.params.id],
 )
 
-const patient = computed(() => patientsQuery.rows.value?.[0])
+const patient = computed(() => patientsQuery.rows.value?.[0] as unknown as Patient)
 
 async function upsertAppointment(validation: VForm) {
   await validation.validate()

@@ -41,5 +41,5 @@ import type { Patient } from '@/models/models'
 
 const patientsQuery = useLiveQuery<Patient>(`SELECT * FROM patients;`)
 
-const patients = computed(() => patientsQuery.rows.value || [])
+const patients = computed(() => (patientsQuery.rows.value || []) as unknown as Patient[])
 </script>
