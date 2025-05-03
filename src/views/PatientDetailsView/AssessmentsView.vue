@@ -1,6 +1,11 @@
 <template>
   <div class="d-flex justify-end">
-    <v-btn size="small" color="blue" variant="tonal" @click="isAddAssessment = !isAddAssessment"
+    <v-btn
+      class="ma-3"
+      size="small"
+      color="blue"
+      variant="tonal"
+      @click="isAddAssessment = !isAddAssessment"
       >{{ $t('add') }}
     </v-btn>
   </div>
@@ -22,8 +27,10 @@
         <v-card-text>
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-caption text-grey">{{ formatDate(assessment.date) }}</div>
-              <div class="mt-2">{{ assessment.description }}</div>
+              <div class="text-body-2">{{ formatDate(assessment.date) }}</div>
+              <div class="mt-2 text-blue-grey-darken-2 font-weight-bold">
+                {{ assessment.description }}
+              </div>
             </div>
             <div>
               <v-btn
