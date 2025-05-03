@@ -44,6 +44,7 @@ import AppointmentForm from './AppointmentForm.vue'
 
 import { deleteAppointmentDb } from '@/pglite/queries/appointments/deleteAppointmentDb'
 import { upsertAppointmentDb } from '@/pglite/queries/appointments/upsertAppointmentDb'
+
 import { appointmentForm, resetAppointmentForm } from '@/views/PatientDetailsView/appointmentState'
 
 import type { Appointment, Patient } from '@/models/models'
