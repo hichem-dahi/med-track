@@ -24,6 +24,8 @@
 import { computed, ref, watchEffect } from 'vue'
 import { injectPGlite, useLiveQuery } from '@electric-sql/pglite-vue'
 import { useRoute } from 'vue-router'
+import { useDisplay } from 'vuetify'
+
 import { format } from 'date-fns'
 
 import { ScheduleXCalendar } from '@schedule-x/vue'
@@ -33,6 +35,7 @@ import {
   createViewMonthAgenda,
   createViewMonthGrid,
   createViewWeek,
+  viewMonthAgenda,
   viewMonthGrid,
   type CalendarEventExternal,
 } from '@schedule-x/calendar'
@@ -50,6 +53,8 @@ import { appointmentForm, resetAppointmentForm } from '@/views/PatientDetailsVie
 import type { Appointment, Patient } from '@/models/models'
 import type { VForm } from 'vuetify/components'
 
+const { mobile } = useDisplay()
+
 // Do not use a ref here, as the calendar instance is not reactive, and doing so might cause issues
 // For updating events, use the events service plugin
 const calendarApp = createCalendar({
@@ -58,7 +63,7 @@ const calendarApp = createCalendar({
     start: '06:00',
     end: '18:00',
   },
-  defaultView: viewMonthGrid.name,
+  defaultView: mobile.value ? viewMonthAgenda.name : viewMonthGrid.name,
   selectedDate: new Date().toISOString().split('T')[0],
   views: [createViewDay(), createViewWeek(), createViewMonthGrid(), createViewMonthAgenda()],
   firstDayOfWeek: 0,
