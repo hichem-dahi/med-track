@@ -12,13 +12,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { injectPGlite } from '@electric-sql/pglite-vue'
-import type { VForm } from 'vuetify/components'
 
 import PatientForm from '@/components/PatientForm.vue'
 
 import { upsertPatientDb } from '@/pglite/queries/patients/upsertPatientsDb'
 
 import { type Patient } from '@/models/models'
+import type { VForm } from 'vuetify/components'
 
 const db = injectPGlite()
 
