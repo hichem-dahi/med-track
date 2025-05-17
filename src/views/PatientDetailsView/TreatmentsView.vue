@@ -12,13 +12,15 @@
   <v-expand-transition>
     <CreateTreatment v-show="isAddTreatment" v-model:form="form" v-model:dialog="isAddTreatment" />
   </v-expand-transition>
-  <div v-if="!isAddTreatment" class="treatments pa-4 text-caption overflow-y-auto">
-    <v-sheet height="300" class="w-75" v-if="treatments.length">
-      <v-card v-for="treatment in sortedTreatments" :key="treatment.id" class="mb-3" elevation="1">
-        <v-card-text>
+  <div v-if="!isAddTreatment" class="treatments pa-4 text-caption overflow-y-auto w-50">
+    <v-expansion-panels v-if="treatments.length">
+      <v-expansion-panel v-for="treatment in sortedTreatments" :key="treatment.id">
+        <template #title>
+          <div class="text-body-2">{{ formatDate(treatment.date) }}</div>
+        </template>
+        <template #text>
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-body-2">{{ formatDate(treatment.date) }}</div>
               <div class="mt-2 text-blue-grey-darken-2 font-weight-bold">
                 {{ treatment.description }}
               </div>
@@ -32,25 +34,30 @@
               />
             </div>
           </div>
-        </v-card-text>
 
-        <!-- Edit Dialog -->
-        <v-dialog v-model="isEditTreatment" max-width="500">
-          <TreatmentForm :title="$t('modify-treatment')" v-model="pickedTreatment">
-            <template #actions="{ isValid }">
-              <div class="d-flex align-end justify-space-between gap-3">
-                <v-btn size="small" variant="tonal" color="red" @click="removeTreatment">
-                  {{ $t('delete') }}
-                </v-btn>
-                <v-btn size="small" variant="tonal" color="primary" @click="editTreatment(isValid)">
-                  {{ $t('save') }}
-                </v-btn>
-              </div>
-            </template>
-          </TreatmentForm>
-        </v-dialog>
-      </v-card>
-    </v-sheet>
+          <!-- Edit Dialog -->
+          <v-dialog v-model="isEditTreatment" max-width="500">
+            <TreatmentForm :title="$t('modify-treatment')" v-model="pickedTreatment">
+              <template #actions="{ isValid }">
+                <div class="d-flex align-end justify-space-between gap-3">
+                  <v-btn size="small" variant="tonal" color="red" @click="removeTreatment">
+                    {{ $t('delete') }}
+                  </v-btn>
+                  <v-btn
+                    size="small"
+                    variant="tonal"
+                    color="primary"
+                    @click="editTreatment(isValid)"
+                  >
+                    {{ $t('save') }}
+                  </v-btn>
+                </div>
+              </template>
+            </TreatmentForm>
+          </v-dialog>
+        </template>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <div v-else class="text-grey mt-2">{{ $t('no-treatments-msg') }}</div>
   </div>
 </template>

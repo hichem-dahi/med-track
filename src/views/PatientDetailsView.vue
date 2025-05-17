@@ -7,44 +7,41 @@
       <v-col cols="12" md="5">
         <PatientCard elevation="0" variant="text" :patient="patient" />
       </v-col>
-      <v-divider vertical />
-
+    </v-row>
+    <v-row>
       <v-col>
         <v-tabs v-model="tab" color="deep-purple-accent-4">
-          <v-tab value="1">{{ $t('assessments') }}</v-tab>
-          <v-tab value="2">{{ $t('treatments') }}</v-tab>
+          <v-tab value="1">{{ $t('schedule') }}</v-tab>
+          <v-tab value="2">{{ $t('assessments') }}</v-tab>
+          <v-tab value="3">{{ $t('treatments') }}</v-tab>
         </v-tabs>
 
         <v-tabs-window v-model="tab">
           <v-tabs-window-item value="1">
-            <AssessmentsView v-if="patient.id" :patientId="patient.id" />
+            <v-btn
+              class="my-3"
+              size="small"
+              variant="tonal"
+              color="purple"
+              @click="isAddAppointment = !isAddAppointment"
+              >{{ $t('add-appointment') }}</v-btn
+            >
+            <v-dialog v-model="isAddAppointment" max-width="500">
+              <AppointmentForm v-model="appointmentForm">
+                <template #actions="{ validation }">
+                  <v-btn block @click="upsertAppointment(validation)">{{ $t('save') }}</v-btn>
+                </template>
+              </AppointmentForm>
+            </v-dialog>
+            <Calendar />
           </v-tabs-window-item>
           <v-tabs-window-item value="2">
+            <AssessmentsView v-if="patient.id" :patientId="patient.id" />
+          </v-tabs-window-item>
+          <v-tabs-window-item value="3">
             <TreatmentsView v-if="patient.id" :patientId="patient.id" />
           </v-tabs-window-item>
         </v-tabs-window>
-      </v-col>
-    </v-row>
-    <v-row style="margin-top: 80px">
-      <v-col>
-        <div class="text-h6 py-4">{{ $t('schedule') }}</div>
-
-        <v-btn
-          class="my-3"
-          size="small"
-          variant="tonal"
-          color="purple"
-          @click="isAddAppointment = !isAddAppointment"
-          >{{ $t('add-appointment') }}</v-btn
-        >
-        <v-dialog v-model="isAddAppointment" max-width="500">
-          <AppointmentForm v-model="appointmentForm">
-            <template #actions="{ validation }">
-              <v-btn block @click="upsertAppointment(validation)">{{ $t('save') }}</v-btn>
-            </template>
-          </AppointmentForm>
-        </v-dialog>
-        <Calendar />
       </v-col>
     </v-row>
   </div>

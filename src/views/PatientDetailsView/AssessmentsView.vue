@@ -16,18 +16,15 @@
       v-model:dialog="isAddAssessment"
     />
   </v-expand-transition>
-  <div v-if="!isAddAssessment" class="assessments pa-4 text-caption overflow-y-auto">
-    <v-sheet height="300" class="w-75" v-if="assessments.length">
-      <v-card
-        v-for="assessment in sortedAssessments"
-        :key="assessment.id"
-        class="mb-3"
-        elevation="1"
-      >
-        <v-card-text>
+  <div v-if="!isAddAssessment" class="assessments pa-4 text-caption overflow-y-auto w-50">
+    <v-expansion-panels v-if="assessments.length">
+      <v-expansion-panel v-for="assessment in sortedAssessments" :key="assessment.id">
+        <template #title>
+          <div class="text-body-2">{{ formatDate(assessment.date) }}</div>
+        </template>
+        <template #text>
           <div class="d-flex justify-space-between align-center">
             <div>
-              <div class="text-body-2">{{ formatDate(assessment.date) }}</div>
               <div class="mt-2 text-blue-grey-darken-2 font-weight-bold">
                 {{ assessment.description }}
               </div>
@@ -41,30 +38,30 @@
               />
             </div>
           </div>
-        </v-card-text>
 
-        <!-- Edit Dialog -->
-        <v-dialog v-model="isEditAssessment" max-width="500">
-          <AssessmentForm :title="$t('modify-Assessment')" v-model="pickedAssessment">
-            <template #actions="{ isValid }">
-              <div class="d-flex align-end justify-space-between gap-3">
-                <v-btn size="small" variant="tonal" color="red" @click="removeAssessment">
-                  {{ $t('delete') }}
-                </v-btn>
-                <v-btn
-                  size="small"
-                  variant="tonal"
-                  color="primary"
-                  @click="editAssessment(isValid)"
-                >
-                  {{ $t('save') }}
-                </v-btn>
-              </div>
-            </template>
-          </AssessmentForm>
-        </v-dialog>
-      </v-card>
-    </v-sheet>
+          <!-- Edit Dialog -->
+          <v-dialog v-model="isEditAssessment" max-width="500">
+            <AssessmentForm :title="$t('modify-Assessment')" v-model="pickedAssessment">
+              <template #actions="{ isValid }">
+                <div class="d-flex align-end justify-space-between gap-3">
+                  <v-btn size="small" variant="tonal" color="red" @click="removeAssessment">
+                    {{ $t('delete') }}
+                  </v-btn>
+                  <v-btn
+                    size="small"
+                    variant="tonal"
+                    color="primary"
+                    @click="editAssessment(isValid)"
+                  >
+                    {{ $t('save') }}
+                  </v-btn>
+                </div>
+              </template>
+            </AssessmentForm>
+          </v-dialog>
+        </template>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <div v-else class="text-grey mt-2">{{ $t('no-assessments-msg') }}</div>
   </div>
 </template>
