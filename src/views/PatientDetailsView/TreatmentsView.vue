@@ -12,7 +12,7 @@
   <v-expand-transition>
     <CreateTreatment v-show="isAddTreatment" v-model:form="form" v-model:dialog="isAddTreatment" />
   </v-expand-transition>
-  <div v-if="!isAddTreatment" class="treatments pa-4 text-caption overflow-y-auto w-50">
+  <div v-if="!isAddTreatment" class="treatments pa-4 text-caption overflow-y-auto">
     <v-expansion-panels v-if="treatments.length">
       <v-expansion-panel v-for="treatment in sortedTreatments" :key="treatment.id">
         <template #title>

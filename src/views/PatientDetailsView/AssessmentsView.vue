@@ -16,7 +16,7 @@
       v-model:dialog="isAddAssessment"
     />
   </v-expand-transition>
-  <div v-if="!isAddAssessment" class="assessments pa-4 text-caption overflow-y-auto w-50">
+  <div v-if="!isAddAssessment" class="assessments pa-4 text-caption overflow-y-auto">
     <v-expansion-panels v-if="assessments.length">
       <v-expansion-panel v-for="assessment in sortedAssessments" :key="assessment.id">
         <template #title>
