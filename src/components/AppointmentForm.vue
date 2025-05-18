@@ -43,7 +43,7 @@
           :min="new Date()"
           :label="$t('until-date')"
           :rules="[rules.required]"
-          :hint="`${recurrentDates?.length} ${$t('appointments')}`"
+          :hint="`${model.length} ${$t('appointments')}`"
         />
       </div>
     </v-form>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch, watchEffect } from 'vue'
 import { addDays, format, getDay, isBefore, isSameDay } from 'date-fns'
 
 import { useIsoverlappingDate } from '@/composables/useIsOverlappingDate'
@@ -60,8 +60,8 @@ import { useIsoverlappingDate } from '@/composables/useIsOverlappingDate'
 import type { Appointment } from '@/models/models'
 
 const days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
-const formRef = ref()
 
+const formRef = ref()
 const isRecurrentDate = ref(false)
 const recurrentDateForm = ref({
   untilDate: new Date(),
@@ -95,13 +95,13 @@ const form = reactive({
 const selectDay = computed(() => getDay(model.value[0].start_time))
 
 const recurrentDates = computed(() => {
-  if (!isRecurrentDate.value) return []
-
   const start = date.value
   const end = recurrentDateForm.value.untilDate
+  if (!isRecurrentDate.value || !start || !end) return []
+
   const dates: Date[] = []
 
-  let current = start
+  let current = addDays(start, 7)
   if (!current) return
   while (isBefore(current, end) || isSameDay(current, end)) {
     dates.push(current)
@@ -110,6 +110,11 @@ const recurrentDates = computed(() => {
 
   return dates
 })
+
+function setTime(date: Date, time: string) {
+  const dateStr = format(date, 'yyyy-MM-dd')
+  return dateStr && time ? new Date(`${dateStr}T${time}`) : date
+}
 
 // Combine date + time into ISO datetime strings
 watch(
@@ -135,10 +140,12 @@ watch(recurrentDates, (dates) => {
     ]
 })
 
-function setTime(date: Date, time: string) {
-  const dateStr = format(date, 'yyyy-MM-dd')
-  return dateStr && time ? new Date(`${dateStr}T${time}`) : ''
-}
+watchEffect(() => {
+  if (!model.value[0].is_select_time) {
+    form.startTime = ''
+    form.endTime = ''
+  }
+})
 
 const rules = {
   required: (v: string) => !!v || 'Required field',
