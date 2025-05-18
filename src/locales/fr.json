@@ -47,5 +47,9 @@
     "select-time": "Sélectionner l'heure",
     "view-patient": "Voir le patient",
     "modify-treatment": "Modifier la conduite à tenir",
-    "patient-info": "Informations du patient"
+    "patient-info": "Informations du patient",
+    "recurrent-date": "Date récurrente",
+    "appointment": "Rendez-vous",
+    "appointments": "Rendez-vous",
+    "every": "Chaque"
 }

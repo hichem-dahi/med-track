@@ -47,5 +47,9 @@
     "select-time": "اختر الوقت",
     "view-patient": "عرض المريض",
     "modify-treatment": "تعديل العلاج",
-    "patient-info": "معلومات المريض"
+    "patient-info": "معلومات المريض",
+    "recurrent-date": "تاريخ متكرر",
+    "appointment": "موعد",
+    "appointments": "المواعيد",
+    "every": "كلّ"
 }
