@@ -11,10 +11,10 @@ const defaultAppointmentForm = (): Appointment => ({
   is_select_time: true,
 })
 
-const appointmentForm = ref<Appointment>(defaultAppointmentForm())
+const appointmentsForm = ref<Appointment[]>([defaultAppointmentForm()])
 
 function resetAppointmentForm() {
-  appointmentForm.value = defaultAppointmentForm()
+  appointmentsForm.value = [defaultAppointmentForm()]
 }
 
-export { appointmentForm, resetAppointmentForm, defaultAppointmentForm }
+export { appointmentsForm, resetAppointmentForm, defaultAppointmentForm }

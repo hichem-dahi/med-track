@@ -2,16 +2,29 @@ import type { Transaction } from '@electric-sql/pglite'
 import type { PGliteWithLive } from '@electric-sql/pglite/live'
 import type { Appointment } from '@/models/models'
 
-export async function upsertAppointmentDb(
+export async function upsertAppointmentsDb(
   db: PGliteWithLive | Transaction | undefined,
-  appointmentData: Appointment,
+  appointments: Appointment[],
 ) {
-  if (!db) return
-  console.log(appointmentData)
+  if (!db || !appointments.length) return
+
+  // Générer les blocs VALUES ($1, $2, ..., $n) dynamiquement
+  const valuesPlaceholders = appointments
+    .map((_, i) => {
+      const offset = i * 7
+      return `(
+        COALESCE($${offset + 1}, gen_random_uuid()),
+        $${offset + 2}, $${offset + 3}, $${offset + 4},
+        $${offset + 5}, $${offset + 6}, $${offset + 7}
+      )`
+    })
+    .join(',')
 
   const query = `
-    INSERT INTO appointments (id, patient_id, description, start_time, end_time, checked, is_select_time)
-    VALUES (COALESCE($1, gen_random_uuid()), $2, $3, $4, $5, $6, $7)
+    INSERT INTO appointments (
+      id, patient_id, description, start_time, end_time, checked, is_select_time
+    )
+    VALUES ${valuesPlaceholders}
     ON CONFLICT (id)
     DO UPDATE SET
       patient_id = EXCLUDED.patient_id,
@@ -20,16 +33,18 @@ export async function upsertAppointmentDb(
       end_time = EXCLUDED.end_time,
       checked = EXCLUDED.checked,
       is_select_time = EXCLUDED.is_select_time
-
   `
 
-  await db.query(query, [
-    appointmentData.id || null,
-    appointmentData.patient_id,
-    appointmentData.description,
-    appointmentData.start_time,
-    appointmentData.end_time,
-    appointmentData.checked,
-    appointmentData.is_select_time,
+  // Aplatir toutes les valeurs dans un seul tableau
+  const values = appointments.flatMap((a) => [
+    a.id || null,
+    a.patient_id,
+    a.description,
+    a.start_time,
+    a.end_time,
+    a.checked,
+    a.is_select_time,
   ])
+
+  await db.query(query, values)
 }
