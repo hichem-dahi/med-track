@@ -168,7 +168,7 @@ async function upsertAppointment(validation: VForm) {
   await validation.validate()
   if (!validation.isValid) return
 
-  await upsertAppointmentsDb(db, AppointmentForm.value)
+  await upsertAppointmentsDb(db, appointmentsForm.value)
   resetAppointmentForm()
   isAddAppointment.value = false
 }
