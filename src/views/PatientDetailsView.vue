@@ -27,7 +27,7 @@
               >{{ $t('add-appointment') }}</v-btn
             >
             <v-dialog v-model="isAddAppointment" max-width="500">
-              <AppointmentForm v-model="appointmentForm">
+              <AppointmentForm v-model="appointmentsForm">
                 <template #actions="{ validation }">
                   <v-btn block @click="upsertAppointment(validation)">{{ $t('save') }}</v-btn>
                 </template>
@@ -59,9 +59,9 @@ import Calendar from '@/components/Calendar.vue'
 import AssessmentsView from './PatientDetailsView/AssessmentsView.vue'
 import TreatmentsView from './PatientDetailsView/TreatmentsView.vue'
 
-import { upsertAppointmentDb } from '@/pglite/queries/appointments/upsertAppointmentDb'
+import { upsertAppointmentsDb } from '@/pglite/queries/appointments/upsertAppointmentDb'
 
-import { appointmentForm, resetAppointmentForm } from './PatientDetailsView/appointmentState'
+import { appointmentsForm, resetAppointmentForm } from './PatientDetailsView/appointmentState'
 
 import type { VForm } from 'vuetify/components'
 import type { Patient } from '@/models/models'
@@ -101,7 +101,10 @@ async function upsertAppointment(validation: VForm) {
   await validation.validate()
   if (!validation.isValid || !patient.value?.id) return
 
-  await upsertAppointmentDb(db, { ...appointmentForm.value, patient_id: patient.value.id })
+  await upsertAppointmentsDb(
+    db,
+    appointmentsForm.value.map((a) => ({ ...a, patient_id: patient.value.id! })),
+  )
   resetAppointmentForm()
   isAddAppointment.value = false
 }
