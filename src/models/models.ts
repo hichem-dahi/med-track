@@ -2,7 +2,8 @@
 export interface Patient {
   id?: string // Unique identifier
   name: string
-  birthday: Date // ISO date string (e.g. "1990-05-20")
+  birthday?: Date | null // ISO date string (e.g. "1990-05-20")
+  age: number
   gender: 'male' | 'female'
   phone: string
   medical_history: string

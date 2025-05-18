@@ -1,4 +1,5 @@
-export function calculateAge(birthday: Date | string): number {
+export function calculateAge(birthday?: Date | null | string): number | undefined {
+  if (!birthday) return
   const birthDate = new Date(birthday)
   const today = new Date()
 
@@ -19,7 +20,6 @@ export const formatDate = (date: Date | string) =>
     month: 'short',
     day: 'numeric',
   })
-
 
 export async function fileToBase64(file: File) {
   return new Promise<string>((resolve, reject) => {

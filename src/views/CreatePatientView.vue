@@ -27,10 +27,11 @@ const router = useRouter()
 const form = ref<Patient>({
   name: '',
   phone: '',
-  birthday: new Date(),
+  birthday: null,
   gender: 'male',
   medical_history: '',
   first_consultation_date: new Date(),
+  age: 0,
 })
 
 async function addPatient(validation: VForm) {

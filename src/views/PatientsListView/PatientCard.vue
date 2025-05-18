@@ -17,11 +17,11 @@
     </template>
 
     <template #title>
-      <span class="text-subtitle-1">{{ patient.name }}</span>
+      <span class="text-title-1">{{ patient.name }}</span>
     </template>
 
     <template #subtitle>
-      <span class="text-caption">{{ formatDate(patient.birthday) }}</span>
+      <span v-if="patient.birthday" class="text-caption">{{ formatDate(patient.birthday) }}</span>
     </template>
     <template #text>
       <div
@@ -146,7 +146,7 @@ const form = ref({ ...props.patient })
 const patientItems = ref([
   { title: t('phone'), html: `<a href="tel:${props.patient.phone}">${props.patient.phone}</a>` },
   { title: t('sex'), html: t(props.patient.gender) },
-  { title: t('age'), html: calculateAge(props.patient.birthday) },
+  { title: t('age'), html: calculateAge(props.patient.birthday) ?? props.patient.age },
   { title: t('first-consultation'), html: formatDate(props.patient.first_consultation_date) },
 ])
 
@@ -180,6 +180,7 @@ async function upsertImages() {
 async function deleteImage(id: string) {
   await deletePatientImagesDb(db, [id])
 }
+
 const removePatient = async () => {
   if (props.patient.id) await deletePatientDb(db, props.patient.id)
 }

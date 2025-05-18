@@ -25,10 +25,16 @@
           :label="$t('birthday')"
           prepend-icon=""
           prepend-inner-icon="$calendar"
-          :rules="[rules.date]"
-          required
-        ></v-date-input>
+          clearable
+        />
 
+        <v-text-field
+          density="compact"
+          v-model="model.age"
+          type="number"
+          :label="$t('age')"
+          :rules="[rules.age]"
+        />
         <v-select
           density="compact"
           v-model="model.gender"
@@ -51,7 +57,6 @@
           :label="$t('first-consultation')"
           prepend-icon=""
           prepend-inner-icon="$calendar"
-          :rules="[rules.date]"
           required
         ></v-date-input>
       </v-form>
@@ -64,9 +69,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { type Patient } from '@/models/models'
+import { calculateAge } from '@/utils/utils'
 
 const { t } = useI18n()
 
@@ -78,6 +84,7 @@ const model = defineModel<Patient>({
   default: {
     name: '',
     phone: '',
+    age: null,
     birthday: '',
     gender: '',
     medical_history: '',
@@ -91,7 +98,13 @@ const rules = {
   required: (v: unknown) => !!v || t('validation.required'),
   name: (v: string) => (!!v && /^[a-zA-Z\u0600-\u06FF\s'-]{2,50}$/.test(v)) || t('validation.name'),
   phone: (v: string) => (!!v && /^\+?\d{7,15}$/.test(v)) || t('validation.phone'),
-  date: (v: unknown) => !!v || t('validation.date'),
   gender: (v: string) => !!v || t('validation.gender'),
+  age: (v: string) => !!v || t('validation.age'),
 }
+
+watchEffect(() => {
+  if (!model.value.birthday) return
+  model.value.birthday.setHours(12)
+  model.value.age = calculateAge(model.value.birthday) ?? 0
+})
 </script>
